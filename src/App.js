@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from "react";
+import {
+  ilkYapilacaklarListesi,
+  isKucultucu,
+} from "./kucultuculer/isKucultucu";
+import IsListe from "./IsListe";
+import IsEkleForm from "./IsEkleForm";
 
 function App() {
+  const [yapilacaklar, vekilFonksiyon] = useReducer( isKucultucu, ilkYapilacaklarListesi );
+
+  //vekilFonksiyon( {type: "TAMAMLANAN_GUNCELLE"} )
+  const tamamlananSayisi = yapilacaklar.veri.filter( is=>is.complete === true ).length
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <section className="container mt-5">
+        <div className="row">
+          <div className="col-12 col-md-6 mx-auto">
+              <h1 className="h3">Yapılacaklar Listesi</h1>
+              <IsEkleForm vekilFonksiyon={vekilFonksiyon} />
+              <IsListe yapilacaklar={yapilacaklar} vekilFonksiyon={vekilFonksiyon} />
+              <div>
+                Toplam: {tamamlananSayisi + "/" + yapilacaklar.veri.length}
+              </div>
+          </div>
+
+        </div>
+      </section>
+    </>
   );
 }
 
